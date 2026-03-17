@@ -14,7 +14,7 @@ const ProblemSet = () => {
       initial={{ filter: "blur(10px)" }}
       animate={{ filter: "blur(0px)" }}
       transition={{ duration: 0.3, ease: easeInOut }}
-      className="w-full min-h-screen font-mono bg-[#fbf9f4] dark:bg-neutral-950 text-black dark:text-white"
+      className="w-full min-h-screen font-mono bg-[#fbf9f4] dark:bg-neutral-950 text-black dark:text-white px-2"
     >
       <ProblemSetNavbar />
       <ProblemFilter difficulty={difficulty} setDifficulty={setDifficulty} />

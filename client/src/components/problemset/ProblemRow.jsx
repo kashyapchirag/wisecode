@@ -1,6 +1,7 @@
 import React from "react";
 import { easeInOut, motion } from "motion/react";
 import { cn } from "@/utils/cn";
+import { Check } from "lucide-react";
 
 const ProblemRow = ({ id, title, difficulty, solved }) => {
   const difficultyStyle = {
@@ -22,11 +23,16 @@ const ProblemRow = ({ id, title, difficulty, solved }) => {
         <span className="text-neutral-500 dark:text-neutral-400">{id}</span>
         <span className="text-neutral-800 dark:text-neutral-300">{title}</span>
       </div>
-      <span
-        className={cn(difficultyStyle[difficulty], "py-0.5 px-3 rounded-4xl")}
-      >
-        {difficulty.toUpperCase()}
-      </span>
+      <div className="flex gap-3 bg-red- justify-between w-30 items-center">
+        <span className="text-green-600 w-10 dark:text-green-500">
+          {solved && <Check size={16} />}
+        </span>
+        <span
+          className={cn(difficultyStyle[difficulty], "py-0.5 px-3 rounded-4xl")}
+        >
+          {difficulty.toUpperCase()}
+        </span>
+      </div>
     </motion.div>
   );
 };

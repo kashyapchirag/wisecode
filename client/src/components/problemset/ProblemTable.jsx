@@ -10,7 +10,7 @@ const ProblemTable = ({ difficulty }) => {
     <div className="w-full divide-y mt-6 divide-neutral-200 dark:divide-neutral-800">
       {filteredProblems.map((ele, idx) => (
         <ProblemRow
-          key={idx}
+          key={ele.id}
           id={ele.id}
           title={ele.title}
           difficulty={ele.difficulty}
