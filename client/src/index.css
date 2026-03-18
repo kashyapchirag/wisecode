@@ -23,6 +23,19 @@
     font-style: normal;
 }
 
+.cm-editor {
+    border-radius: 0 0 0.78rem 0.78rem !important;
+    overflow: hidden;
+}
+
+.cm-scroller {
+    border-radius: 0 0 0.78rem 0.78rem !important;
+}
+
+.cm-editor.cm-focused {
+    outline: none !important;
+}
+
 :root {
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -135,13 +148,15 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
-  html {
-    @apply font-sans;
+
+    html {
+        @apply font-sans;
     }
 }

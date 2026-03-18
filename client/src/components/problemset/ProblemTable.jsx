@@ -11,7 +11,7 @@ const ProblemTable = ({ problems, difficulty }) => {
       {filteredProblems.map((ele, idx) => (
         <ProblemRow
           key={ele._id}
-          id={idx + 1}
+          id={ele.problemNumber}
           title={ele.title}
           slug={ele.slug}
           difficulty={ele.difficulty}

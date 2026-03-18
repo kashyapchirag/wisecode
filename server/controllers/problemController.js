@@ -10,8 +10,11 @@ export const getProblemSet = async (req, res) => {
 }
 export const getProblemBySlug = async (req, res) => {
     try {
-        const problems = await Problem.findOne({ slug })
-        res.status(200).json(problems);
+        const problem = await Problem.findOne({ slug: req.params.slug })
+        if (!problem) {
+            res.status(404).json({ message: 'Problem not found' });
+        }
+        res.status(200).json(problem);
     } catch (err) {
         res.status(500).json({ message: 'Server Error', error: err.message })
     }
