@@ -11,6 +11,7 @@ import { tokyoNight } from "@uiw/codemirror-themes-all";
 import { githubLight } from "@uiw/codemirror-themes-all";
 
 import { ChevronDown } from "lucide-react";
+import { Play, Send } from "lucide-react";
 
 //shadcn dropdown import
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import axios from "axios";
 
 const langExtensions = {
   Javascript: javascript(),
@@ -30,7 +32,7 @@ const langExtensions = {
   Cpp: cpp(),
   Java: java(),
 };
-const CodeEditor = ({ starterCode }) => {
+const CodeEditor = ({ slug, starterCode }) => {
   const [language, setLanguage] = useState("Java");
 
   const [code, setCode] = useState("");
@@ -70,6 +72,15 @@ const CodeEditor = ({ starterCode }) => {
   }, []);
 
   const [open, setOpen] = useState(false);
+
+  const onRun = async () => {
+    const res = await axios.post("/api/run", {
+      language,
+      code,
+      slug,
+    });
+  };
+  const onSubmit = async () => {};
 
   return (
     <div className="h-full flex flex-col ">
@@ -154,8 +165,25 @@ const CodeEditor = ({ starterCode }) => {
           autocompletion: true,
           tabSize: 2,
         }}
-        className="flex-1 rounded-xl"
+        className="flex-1 rounded-xl overflow-y-auto"
       />
+
+      <div className="bottom flex justify-end gap-5 bg-transparent px-1 py-1 w-full h-10 ">
+        <button
+          onClick={onRun}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-500 hover:text-black dark:hover:text-white transition-all cursor-pointer"
+        >
+          <Play size={12} />
+          Run
+        </button>
+        <button
+          onClick={onSubmit}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-lg bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400 hover:bg-green-500/20 hover:border-green-500/60 transition-all cursor-pointer"
+        >
+          <Send size={12} />
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

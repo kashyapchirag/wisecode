@@ -122,7 +122,10 @@ const ProblemDetail = () => {
           <Group orientation="vertical" className="h-full flex">
             <Panel defaultSize={90} minSize={30} className="flex h-full">
               <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-                <CodeEditor starterCode={problem?.starterCode} />
+                <CodeEditor
+                  slug={problem?.slug}
+                  starterCode={problem?.starterCode}
+                />
               </div>
             </Panel>
 
