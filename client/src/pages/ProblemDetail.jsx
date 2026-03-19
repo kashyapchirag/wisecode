@@ -132,7 +132,9 @@ const ProblemDetail = () => {
             <Separator className="h-0.5  hover:bg-cyan-400 outline-none transition-colors cursor-col-resize" />
 
             <Panel defaultSize={60} minSize={30} className="flex h-full">
-              <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>
+              <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                <div className="flex p-2"></div>
+              </div>
             </Panel>
           </Group>
         </Panel>

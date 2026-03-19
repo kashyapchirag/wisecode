@@ -81,7 +81,14 @@ const CodeEditor = ({ slug, starterCode }) => {
     });
     console.log(res.data);
   };
-  const onSubmit = async () => {};
+  const onSubmit = async () => {
+    const res = await axios.post("/api/submit", {
+      language,
+      code,
+      slug,
+    });
+    console.log(res.data);
+  };
 
   return (
     <div className="h-full flex flex-col ">

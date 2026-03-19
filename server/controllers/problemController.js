@@ -20,14 +20,14 @@ export const getProblemBySlug = async (req, res) => {
         res.status(500).json({ message: 'Server Error', error: err.message })
     }
 }
-
+const languageID = {
+    Java: 62,
+    Cpp: 54,
+    Python: 71,
+    Javascript: 63
+}
 export const runCode = async (req, res) => {
-    const languageID = {
-        Java: 62,
-        Cpp: 54,
-        Python: 71,
-        Javascript: 63
-    }
+
     const { language, code, slug } = req.body
     try {
         const problem = await Problem.findOne({ slug });
@@ -43,7 +43,7 @@ export const runCode = async (req, res) => {
                         stdin: tc.input,
                         expected_output: tc.expectedOutput
                     }
-                )
+                );
                 const actualOutput = data.stdout?.trim() ?? null;
                 return {
                     input: tc.input,
@@ -56,6 +56,39 @@ export const runCode = async (req, res) => {
             })
         )
         res.status(200).json({ results })
+
+    } catch (err) {
+        res.status(500).json({ message: 'Server Error', error: err.message })
+    }
+}
+
+export const submitCode = async (req, res) => {
+    const { language, code, slug } = req.body;
+    try {
+        const problem = await Problem.findOne({ slug });
+        if (!problem) return res.status(404).json({ message: 'Problem not found' });
+
+        const results = await Promise.all(
+            problem.testCases.map(async (tc, idx) => {
+                const { data } = await axios.post(process.env.JUDGE0_URL, {
+                    source_code: code,
+                    language_id: languageID[language],
+                    stdin: tc.input,
+                    expected_output: tc.expectedOutput,
+                });
+                const actualOutput = data.stdout?.trim() ?? null;
+                return {
+                    input: tc.input,
+                    expectedOutput: tc.expectedOutput,
+                    actualOutput,
+                    passed: tc.expectedOutput === actualOutput,
+                    time: data.time,
+                    status: data.status.description
+                }
+            })
+        )
+        res.status(200).json({ results })
+
 
     } catch (err) {
         res.status(500).json({ message: 'Server Error', error: err.message })
