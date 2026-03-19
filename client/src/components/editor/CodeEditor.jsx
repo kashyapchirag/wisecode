@@ -79,6 +79,7 @@ const CodeEditor = ({ slug, starterCode }) => {
       code,
       slug,
     });
+    console.log(res.data);
   };
   const onSubmit = async () => {};
 
