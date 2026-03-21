@@ -4,11 +4,18 @@ import { useParams } from "react-router-dom";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { cn } from "@/utils/cn";
 import CodeEditor from "@/components/editor/CodeEditor";
+import axios from "axios";
+import TestCasePanel from "@/components/panels/TestCasePanel";
+import SubmitPanel from "@/components/panels/SubmitPanel";
 
 const ProblemDetail = () => {
   const { slug } = useParams();
 
   const [problem, setProblem] = useState(null);
+
+  const [language, setLanguage] = useState("Java");
+
+  const [code, setCode] = useState("");
 
   useEffect(() => {
     const getProblemDetail = async () => {
@@ -25,6 +32,81 @@ const ProblemDetail = () => {
     Medium:
       "bg-yellow-100 text-yellow-700 dark:bg-yellow-400/10 dark:text-yellow-400",
     Hard: "bg-red-100 text-red-700 dark:bg-red-400/10 dark:text-red-400",
+  };
+
+  const [results, setResults] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
+  const [panelView, setPanelView] = useState("TestCase");
+
+  const onRun = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setResults([
+        {
+          input: "[2,7,11,15]\n9",
+          expectedOutput: "[0,1]",
+          actualOutput: "[0,1]",
+          passed: true,
+          status: "Accepted",
+          stderr: null,
+          compileOutput: null,
+        },
+        {
+          input: "[3,2,4]\n6",
+          expectedOutput: "[1,2]",
+          actualOutput: "[2,1]", // wrong on purpose to test failed case
+          passed: true,
+          status: "Wrong Answer",
+          stderr: null,
+          compileOutput: null,
+        },
+      ]);
+      setLoading(false);
+    }, 2000);
+    // const res = await axios.post("/api/run", {
+    //   language,
+    //   code,
+    //   slug,
+    // });
+    // setLoading(false);
+    // console.log(res.data.results);
+    // setResults(res.data.results);
+  };
+  const onSubmit = async () => {
+    setLoading(true);
+    setPanelView("Submit");
+    setTimeout(() => {
+      setResults([
+        {
+          input: "[2,7,11,15]\n9",
+          expectedOutput: "[0,1]",
+          actualOutput: "[0,1]",
+          passed: true,
+          status: "Accepted",
+          stderr: null,
+          compileOutput: null,
+        },
+        {
+          input: "[3,2,4]\n6",
+          expectedOutput: "[1,2]",
+          actualOutput: "[2,1]", // wrong on purpose to test failed case
+          passed: false,
+          status: "Wrong Answer",
+          stderr: null,
+          compileOutput: null,
+        },
+      ]);
+      setLoading(false);
+    }, 2000);
+
+    // const res = await axios.post("/api/submit", {
+    //   language,
+    //   code,
+    //   slug,
+    // });
+    // console.log(res.data);
   };
 
   return (
@@ -121,10 +203,16 @@ const ProblemDetail = () => {
         <Panel defaultSize={60} minSize={30} className="">
           <Group orientation="vertical" className="h-full flex">
             <Panel defaultSize={90} minSize={30} className="flex h-full">
-              <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+              <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 w-full">
                 <CodeEditor
                   slug={problem?.slug}
                   starterCode={problem?.starterCode}
+                  onRun={onRun}
+                  onSubmit={onSubmit}
+                  language={language}
+                  setLanguage={setLanguage}
+                  code={code}
+                  setCode={setCode}
                 />
               </div>
             </Panel>
@@ -132,8 +220,12 @@ const ProblemDetail = () => {
             <Separator className="h-0.5  hover:bg-cyan-400 outline-none transition-colors cursor-col-resize" />
 
             <Panel defaultSize={60} minSize={30} className="flex h-full">
-              <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-                <div className="flex p-2"></div>
+              <div className="flex-1 m-1 rounded-xl overflow-auto bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                {panelView === "TestCase" ? (
+                  <TestCasePanel results={results} loading={loading} />
+                ) : (
+                  <SubmitPanel results={results} loading={loading} />
+                )}
               </div>
             </Panel>
           </Group>
