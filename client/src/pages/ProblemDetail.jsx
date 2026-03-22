@@ -1,4 +1,4 @@
-import { getProblemBySlug } from "@/api/ProblemApi";
+import { getProblemBySlug } from "@/api/problemApi";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Group, Panel, Separator } from "react-resizable-panels";
@@ -7,6 +7,7 @@ import CodeEditor from "@/components/editor/CodeEditor";
 import axios from "axios";
 import TestCasePanel from "@/components/panels/TestCasePanel";
 import SubmitPanel from "@/components/panels/SubmitPanel";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ProblemDetail = () => {
   const { slug } = useParams();
@@ -42,6 +43,7 @@ const ProblemDetail = () => {
 
   const onRun = async () => {
     setLoading(true);
+    setPanelView("TestCase");
     // setTimeout(() => {
     //   setResults([
     //     {
@@ -229,75 +231,140 @@ const ProblemDetail = () => {
       <Group orientation="horizontal" className="flex-1 overflow-hidden pb-1">
         <Panel defaultSize={40} minSize={30} className="flex h-full">
           <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 font-mono p-4 overflow-y-auto">
-            <div className="flex items-center gap-5">
-              <span className="text-2xl flex gap-1">
-                <span className="text-neutral-500 dark:text-neutral-400">
-                  {problem?.problemNumber}.
-                </span>
-                <span>{problem?.title}</span>
-              </span>
-              <span
-                className={cn(
-                  difficultyStyle[problem?.difficulty],
-                  "py-1 px-3 flex justify-center items-center rounded-4xl",
-                )}
-              >
-                {problem?.difficulty.toUpperCase()}
-              </span>
-            </div>
+            {!problem ? (
+              // skeleton
+              <div className="flex flex-col gap-4">
+                {/* title + difficulty */}
+                <div className="flex items-center gap-4">
+                  <Skeleton className="h-7 w-48" />
+                  <Skeleton className="h-6 w-16 rounded-full" />
+                </div>
 
-            {/* description */}
-            <p className="mt-8 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              {problem?.description}
-            </p>
+                {/* description */}
+                <div className="mt-4 flex flex-col gap-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
 
-            {/* examples */}
-            <div className="examples mt-10 flex flex-col gap-4">
-              {problem?.examples.map((ex, idx) => (
-                <div key={idx} className="flex flex-col">
-                  <span className="text-sm font-bold">Example {idx + 1}:</span>
-                  <div className="mt-2 bg-surface-light dark:bg-neutral-800 rounded-lg p-3 text-sm flex flex-col gap-2">
-                    <div className="">
-                      <span className="text-neutral-500 dark:text-neutral-400">
-                        Input:{" "}
-                      </span>
-                      <span>{ex.input}</span>
-                    </div>
-                    <div className="">
-                      <span className="text-neutral-500 dark:text-neutral-400">
-                        Ouput:{" "}
-                      </span>
-                      <span>{ex.output}</span>
-                    </div>
-                    <div>
-                      <span className="text-neutral-500 dark:text-neutral-400">
-                        Explanation:{" "}
-                      </span>
-                      <span className="text-neutral-600 dark:text-neutral-400">
-                        {ex?.explanation}
-                      </span>
-                    </div>
+                {/* example 1 */}
+                <div className="mt-6 flex flex-col gap-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                </div>
+
+                {/* example 2 */}
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                </div>
+
+                {/* constraints */}
+                <div className="mt-4 flex flex-col gap-2">
+                  <Skeleton className="h-4 w-28" />
+                  <Skeleton className="h-4 w-56" />
+                  <Skeleton className="h-4 w-44" />
+                  <Skeleton className="h-4 w-52" />
+                </div>
+
+                {/* tags */}
+                <div className="mt-4 flex flex-col gap-2">
+                  <Skeleton className="h-4 w-20" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                    <Skeleton className="h-6 w-20 rounded-full" />
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* constraints */}
-            {problem?.constraints?.length > 0 && (
-              <div className="mt-6">
-                <span className="text-sm font-bold">Constraints:</span>
-                <ul className="mt-2 flex flex-col gap-1">
-                  {problem.constraints.map((c, index) => (
-                    <li
-                      key={index}
-                      className="text-sm ml-2 text-neutral-600 dark:text-neutral-400 flex gap-2"
-                    >
-                      <span>•</span>
-                      <span>{c}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
+            ) : (
+              // actual content
+              <>
+                <div className="flex items-center gap-5">
+                  <span className="text-2xl flex gap-1">
+                    <span className="text-neutral-500 dark:text-neutral-400">
+                      {problem?.problemNumber}.
+                    </span>
+                    <span>{problem?.title}</span>
+                  </span>
+                  <span
+                    className={cn(
+                      difficultyStyle[problem?.difficulty],
+                      "py-1 px-3 flex justify-center items-center rounded-4xl",
+                    )}
+                  >
+                    {problem?.difficulty.toUpperCase()}
+                  </span>
+                </div>
+
+                <p className="mt-8 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  {problem?.description}
+                </p>
+
+                <div className="examples mt-10 flex flex-col gap-4">
+                  {problem?.examples.map((ex, idx) => (
+                    <div key={idx} className="flex flex-col">
+                      <span className="text-sm font-bold">
+                        Example {idx + 1}:
+                      </span>
+                      <div className="mt-2 bg-surface-light dark:bg-neutral-800 rounded-lg p-3 text-sm flex flex-col gap-2">
+                        <div>
+                          <span className="text-neutral-500 dark:text-neutral-400">
+                            Input:{" "}
+                          </span>
+                          <span>{ex.input}</span>
+                        </div>
+                        <div>
+                          <span className="text-neutral-500 dark:text-neutral-400">
+                            Ouput:{" "}
+                          </span>
+                          <span>{ex.output}</span>
+                        </div>
+                        <div>
+                          <span className="text-neutral-500 dark:text-neutral-400">
+                            Explanation:{" "}
+                          </span>
+                          <span className="text-neutral-600 dark:text-neutral-400">
+                            {ex?.explanation}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {problem?.constraints?.length > 0 && (
+                  <div className="mt-6">
+                    <span className="text-sm font-bold">Constraints:</span>
+                    <ul className="mt-2 flex flex-col gap-1">
+                      {problem.constraints.map((c, index) => (
+                        <li
+                          key={index}
+                          className="text-sm ml-2 text-neutral-600 dark:text-neutral-400 flex gap-2"
+                        >
+                          <span>•</span>
+                          <span>{c}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {problem?.tags?.length > 0 && (
+                  <div className="mt-6 mb-4">
+                    <span className="text-sm font-bold">Topics</span>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {problem.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="text-xs px-3 py-1 rounded-full bg-surface-light dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </Panel>

@@ -3,7 +3,7 @@ import ProblemSetNavbar from "../components/problemset/ProblemSetNavbar";
 import ProblemFilter from "../components/problemset/ProblemFilter";
 import ProblemTable from "@/components/problemset/ProblemTable";
 import { easeInOut, motion } from "motion/react";
-import { getProblems } from "@/api/ProblemApi";
+import { getProblems } from "@/api/problemApi";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const ProblemSet = () => {

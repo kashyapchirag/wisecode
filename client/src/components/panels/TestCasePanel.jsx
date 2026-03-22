@@ -4,6 +4,13 @@ import { cn } from "@/utils/cn";
 
 const TestCasePanel = ({ results, loading }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const passedCases = results?.filter((r) => r.passed).length;
+  const totalCases = results?.length;
+  let compileError = false;
+
+  if (results?.filter((re) => re.status == "Compilation Error").length > 0) {
+    compileError = true;
+  }
 
   return (
     <div className="flex flex-col font-mono h-full">
@@ -30,10 +37,12 @@ const TestCasePanel = ({ results, loading }) => {
                 All Passed
               </span>
             ) : (
-              <span className="flex text-xs  items-center gap-1">
-                <XCircle size={13} />
-                Some Failed
-              </span>
+              !compileError && (
+                <span className="flex text-xs  items-center gap-1">
+                  <XCircle size={13} />
+                  Some Failed
+                </span>
+              )
             )}
           </span>
         )}
@@ -54,7 +63,7 @@ const TestCasePanel = ({ results, loading }) => {
           </span>
         </div>
       )}
-      {results && !loading && (
+      {results && !loading && !compileError && (
         <div className="py-3 px-4 h-full">
           {/* tabs */}
           <div className="tabs flex gap-4">
@@ -104,6 +113,25 @@ const TestCasePanel = ({ results, loading }) => {
               >
                 <div>{results[activeTab].actualOutput ?? "null"}</div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {!loading && results && compileError && (
+        <div className="pb-4">
+          <div className="h-25 flex flex-col justify-center items-center ">
+            <span className="text-red-700 dark:text-red-400 text-xl">
+              Compilation Error
+            </span>
+            <span className="mt-2">
+              {passedCases} / {totalCases} test cases passed
+            </span>
+          </div>
+          <div className="divider mb-4 bg-neutral-200 dark:bg-neutral-800 w-[95%] mx-auto h-0.5 "></div>
+          <div className="error px-5 flex flex-col gap-3">
+            <span className="text-neutral-500">Error</span>
+            <div className="bg-red-500/10 text-red-600 dark:text-red-400 px-4 py-2 whitespace-pre-wrap rounded-lg">
+              {results[0].compileOutput}
             </div>
           </div>
         </div>

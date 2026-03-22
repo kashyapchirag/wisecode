@@ -24,7 +24,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import axios from "axios";
 
 const langExtensions = {
   Javascript: javascript(),
@@ -33,7 +32,6 @@ const langExtensions = {
   Java: java(),
 };
 const CodeEditor = ({
-  slug,
   starterCode,
   onRun,
   onSubmit,

@@ -51,7 +51,8 @@ export const runCode = async (req, res) => {
                     actualOutput,
                     passed: tc.expectedOutput === actualOutput,
                     time: data.time,
-                    status: data.status.description
+                    status: data.status.description,
+                    compileOutput: data.compile_output,
                 }
             })
         )
