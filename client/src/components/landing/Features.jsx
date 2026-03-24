@@ -1,6 +1,7 @@
 import FeatureCard from "./FeatureCard";
 import { motion } from "motion/react";
 
+import ShinyText from "../ShinyText";
 const features = [
   {
     iconBg: "#1a1a2e",
@@ -143,11 +144,45 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="px-8 py-10 border-b border-white/5">
-      <div className="grid max-w-[75vw] mx-auto grid-cols-3 gap-3">
-        {features.map((f, i) => (
-          <FeatureCard key={i} {...f} />
-        ))}
+    <section className="py-16 md:py-20 border-b border-white/5">
+      <div className="max-w-[90vw] md:max-w-[75vw] mx-auto px-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-10 md:mb-12"
+        >
+          <div className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-white/5 text-neutral-400 border border-white/10 mb-4 font-mono">
+            everything you need
+          </div>
+          <h2 className="text-2xl md:text-3xl font-medium text-white mb-3">
+            Built for{" "}
+            <ShinyText
+              text="serious"
+              speed={2}
+              delay={0}
+              color="#b5b5b5"
+              shineColor="#ffffff"
+              spread={120}
+              direction="left"
+              yoyo={false}
+              pauseOnHover={false}
+              disabled={false}
+            />{" "}
+            practice
+          </h2>
+          <p className="text-sm text-neutral-500 max-w-sm mx-auto leading-relaxed">
+            Everything you need to go from beginner to interview-ready, in one
+            place.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {features.map((f, i) => (
+            <FeatureCard key={i} {...f} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );

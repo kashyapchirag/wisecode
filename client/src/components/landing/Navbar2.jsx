@@ -62,7 +62,7 @@ const Navbar2 = () => {
               key={idx}
               href={item.link}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-neutral-300"
+              className="text-neutral-300 mx-auto"
             >
               {item.name}
             </a>
@@ -70,17 +70,17 @@ const Navbar2 = () => {
           <div className="flex flex-col gap-3 w-full">
             <NavbarButton
               variant="primary"
-              className="w-full"
+              className="w-1/2 mx-auto font-medium font-inter"
               onClick={() => {
                 navigate("/login");
                 setIsMobileMenuOpen(false);
               }}
             >
-              <button>Sign in</button>
+              Sign in
             </NavbarButton>
             <NavbarButton
               variant="primary"
-              className="w-full"
+              className="w-1/2 mx-auto font-medium font-inter"
               onClick={() => {
                 navigate("/register");
                 setIsMobileMenuOpen(false);
