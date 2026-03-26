@@ -6,7 +6,7 @@ export const getProblems = async () => {
     return res.data;
 }
 
-export const getCompletionPercentage = async () => {
+export const getCompletionProgress = async () => {
     const res = await api.get('/problems/completion');
     return res.data;
 }

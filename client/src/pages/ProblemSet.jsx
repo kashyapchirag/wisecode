@@ -3,7 +3,7 @@ import ProblemSetNavbar from "../components/problemset/ProblemSetNavbar";
 import ProblemFilter from "../components/problemset/ProblemFilter";
 import ProblemTable from "@/components/problemset/ProblemTable";
 import { easeInOut, motion } from "motion/react";
-import { getCompletionPercentage, getProblems } from "@/api/problemApi";
+import { getCompletionProgress, getProblems } from "@/api/problemApi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
 
@@ -18,6 +18,7 @@ const ProblemSet = () => {
   const [difficulty, setDifficulty] = useState("All");
 
   const [problems, setProblems] = useState([]);
+  const [solvedProblems, setSolvedProblems] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -31,10 +32,11 @@ const ProblemSet = () => {
       setLoading(false);
     }
   };
-  const fetchCompletionPercentage = async () => {
+  const fetchCompletionProgress = async () => {
     try {
-      const data = await getCompletionPercentage();
+      const data = await getCompletionProgress();
       setCompletion(data.completion);
+      setSolvedProblems(data.acceptedProblems);
     } catch (err) {
       setCompletion(0);
       console.log("error while fetching completion percentage", err.message);
@@ -48,7 +50,7 @@ const ProblemSet = () => {
       document.documentElement.classList.remove("dark");
     }
     fetchProblems();
-    fetchCompletionPercentage();
+    fetchCompletionProgress();
   }, []);
 
   return (
@@ -80,7 +82,11 @@ const ProblemSet = () => {
           ))}
         </div>
       ) : (
-        <ProblemTable problems={problems} difficulty={difficulty} />
+        <ProblemTable
+          solvedProblems={solvedProblems}
+          problems={problems}
+          difficulty={difficulty}
+        />
       )}
     </motion.div>
   );

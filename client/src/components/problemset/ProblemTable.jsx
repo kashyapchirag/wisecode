@@ -2,7 +2,7 @@ import { mockProblems } from "@/utils/mockProblems";
 import React, { useEffect } from "react";
 import ProblemRow from "./ProblemRow";
 
-const ProblemTable = ({ problems, difficulty }) => {
+const ProblemTable = ({ solvedProblems, problems, difficulty }) => {
   const filteredProblems = problems.filter((problem) =>
     difficulty == "All" ? true : difficulty === problem.difficulty,
   );
@@ -15,7 +15,7 @@ const ProblemTable = ({ problems, difficulty }) => {
           title={ele.title}
           slug={ele.slug}
           difficulty={ele.difficulty}
-          solved={ele.solved}
+          solved={solvedProblems.includes(ele._id)}
         />
       ))}
     </div>

@@ -6,7 +6,6 @@ export const getProblemSet = async (req, res) => {
     try {
         // problem list
         const problems = await Problem.find();
-
         res.status(200).json(problems);
 
     } catch (err) {
@@ -26,12 +25,8 @@ export const getCompletion = async (req, res) => {
         const completion = Math.round((acceptedProblems.length / totalProblems.length) * 1000) / 10;
 
         // show checkmark for solved
-        const solvedProblems = await Submission.find({
-            userId: req.user.userId,
-            status: "Accepted",
-        }).distinct("problemId");
 
-        res.status(200).json({ completion })
+        res.status(200).json({ completion, acceptedProblems })
 
     } catch (err) {
         res.status(500).json({ message: 'Server Error', error: err.message })
