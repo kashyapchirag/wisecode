@@ -10,7 +10,7 @@ import { java } from "@codemirror/lang-java";
 import { tokyoNight } from "@uiw/codemirror-themes-all";
 import { githubLight } from "@uiw/codemirror-themes-all";
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Settings } from "lucide-react";
 import { Play, Send } from "lucide-react";
 
 //shadcn dropdown import
@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NavLink } from "react-router-dom";
+import { IconReload } from "@tabler/icons-react";
 
 const langExtensions = {
   Javascript: javascript(),
@@ -39,18 +40,19 @@ const CodeEditor = ({
   language,
   setLanguage,
   code,
+  acceptedCodes,
   setCode,
   isLoggedIn,
 }) => {
   useEffect(() => {
-    if (starterCode && code === "") {
-      setCode(starterCode.java || ""); // load when data arrives
+    if (starterCode) {
+      setCode(acceptedCodes.Java || starterCode.java); // load when data arrives
     }
   }, [starterCode]);
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
-    setCode(starterCode?.[lang.toLowerCase()]);
+    setCode(acceptedCodes[lang] || starterCode?.[lang.toLowerCase()]);
   };
 
   const languageStyle = {
@@ -91,7 +93,7 @@ const CodeEditor = ({
   return (
     <div className="h-full flex flex-col w-full">
       {/* navbar */}
-      <div className="flex p-2">
+      <div className="flex justify-between p-2">
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <Button
@@ -153,6 +155,43 @@ const CodeEditor = ({
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <div className="options flex gap-2">
+          {/* Reload */}
+          <button
+            onClick={() => {
+              setCode(starterCode?.[language.toLowerCase()]);
+            }}
+            className="group relative flex h-8 w-8 items-center justify-center rounded-lg 
+    border border-neutral-200 dark:border-neutral-800 
+    bg-white/70 dark:bg-neutral-900/70 backdrop-blur
+    transition-all duration-300 
+    hover:scale-105 hover:bg-neutral-100 dark:hover:bg-neutral-800
+    cursor-pointer"
+          >
+            <IconReload
+              size={16}
+              className="text-neutral-600 dark:text-neutral-400 
+      group-hover:text-black dark:group-hover:text-white transition-colors"
+            />
+          </button>
+
+          {/* Settings */}
+          <button
+            className="group relative flex h-8 w-8 items-center justify-center rounded-lg 
+    border border-neutral-200 dark:border-neutral-800 
+    bg-white/70 dark:bg-neutral-900/70 backdrop-blur
+    transition-all duration-300 
+    hover:scale-105 hover:bg-neutral-100 dark:hover:bg-neutral-800
+    cursor-pointer"
+          >
+            <Settings
+              size={16}
+              className="text-neutral-600 dark:text-neutral-400 
+      group-hover:text-black dark:group-hover:text-white transition-colors"
+            />
+          </button>
+        </div>
       </div>
 
       {/* editor */}

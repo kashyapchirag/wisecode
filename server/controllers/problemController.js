@@ -33,18 +33,22 @@ export const getCompletion = async (req, res) => {
 export const getProblemBySlug = async (req, res) => {
     try {
         const problem = await Problem.findOne({ slug: req.params.slug })
-        let userCode = null;
         if (!problem) {
             return res.status(404).json({ message: 'Problem not found' });
         }
 
+        const latestByLanguage = {};
         if (req.user) {
-            const acceptedProblem = await Submission.findOne({ problemId: problem._id, userId: req.user.userId, status: "Accepted" }).sort({ createdAt: -1 })
+            const acceptedProblems = await Submission.find({ problemId: problem._id, userId: req.user.userId, status: "Accepted" }).sort({ createdAt: -1 })
 
-            userCode = acceptedProblem?.code || null;
+            acceptedProblems.forEach(p => {
+                if (!latestByLanguage[p.language]) {
+                    latestByLanguage[p.language] = p.code
+                }
+            });
         }
 
-        res.status(200).json({ problem, userCode });
+        res.status(200).json({ problem, latestByLanguage });
     } catch (err) {
         res.status(500).json({ message: 'Server Error', error: err.message })
     }

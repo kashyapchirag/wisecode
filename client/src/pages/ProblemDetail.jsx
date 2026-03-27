@@ -20,6 +20,7 @@ const ProblemDetail = () => {
   const [language, setLanguage] = useState("Java");
 
   const [code, setCode] = useState("");
+  const [acceptedCodes, setAcceptedCodes] = useState({});
 
   const { isLoggedIn, setIsLoggedIn } = useOutletContext();
 
@@ -28,8 +29,8 @@ const ProblemDetail = () => {
       try {
         const data = await getProblemBySlug(slug);
         setProblem(data.problem);
-        if (data.userCode) {
-          setCode(data.userCode);
+        if (data.latestByLanguage) {
+          setAcceptedCodes(data.latestByLanguage);
         }
       } catch (err) {
         console.log("error aagya", err.message);
@@ -99,6 +100,14 @@ const ProblemDetail = () => {
   const [isDark, setIsDark] = useState(
     document.documentElement.classList.contains("dark"),
   );
+
+  useEffect(() => {
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -314,6 +323,7 @@ const ProblemDetail = () => {
                   language={language}
                   setLanguage={setLanguage}
                   code={code}
+                  acceptedCodes={acceptedCodes}
                   setCode={setCode}
                   isLoggedIn={isLoggedIn}
                 />
