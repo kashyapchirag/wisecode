@@ -97,33 +97,31 @@ const ProblemDetail = () => {
   };
 
   //   to check if darkmode is toggled on or not
-  const [isDark, setIsDark] = useState(
-    document.documentElement.classList.contains("dark"),
-  );
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
 
   useEffect(() => {
-    if (localStorage.getItem("theme") === "dark") {
+    if (isDark) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
-  }, []);
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => observer.disconnect();
-  }, []);
+  }, [isDark]);
 
   const navigate = useNavigate();
 
+  const [openSettings, setOpenSettings] = useState(false);
+
   return (
-    <div className="w-full h-screen bg-[#fbf9f4] dark:bg-neutral-950 text-black dark:text-white flex flex-col">
+    <div
+      onClick={(e) => {
+        setOpenSettings(false);
+      }}
+      className="w-full h-screen bg-[#fbf9f4] dark:bg-neutral-950 text-black dark:text-white flex flex-col"
+    >
       {/* navbar */}
       <div className="h-12 border-b w-full border-neutral-200 dark:border-neutral-800 flex items-center gap-4 px-4">
         <Button
@@ -140,9 +138,9 @@ const ProblemDetail = () => {
         <span className="font-mono font-bold">WiseCode</span>
 
         <button
-          onClick={() => {
-            const newTheme = !isDark;
-            document.documentElement.classList.toggle("dark", newTheme);
+          onClick={(e) => {
+            e.preventDefault();
+            setIsDark((prev) => !prev);
             localStorage.setItem("theme", newTheme ? "dark" : "light");
           }}
           className="group relative flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/70 backdrop-blur transition-all duration-300 hover:scale-105 hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer"
@@ -326,6 +324,8 @@ const ProblemDetail = () => {
                   acceptedCodes={acceptedCodes}
                   setCode={setCode}
                   isLoggedIn={isLoggedIn}
+                  openSettings={openSettings}
+                  setOpenSettings={setOpenSettings}
                 />
               </div>
             </Panel>

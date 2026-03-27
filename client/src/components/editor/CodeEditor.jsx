@@ -7,8 +7,16 @@ import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
 import { cpp } from "@codemirror/lang-cpp";
 import { java } from "@codemirror/lang-java";
-import { tokyoNight } from "@uiw/codemirror-themes-all";
-import { githubLight } from "@uiw/codemirror-themes-all";
+import {
+  dracula,
+  okaidia,
+  tokyoNight,
+  githubLight,
+  duotoneLight,
+  materialLight,
+  nord,
+  solarizedLight,
+} from "@uiw/codemirror-themes-all";
 
 import { ChevronDown, Settings } from "lucide-react";
 import { Play, Send } from "lucide-react";
@@ -27,6 +35,9 @@ import {
 import { NavLink } from "react-router-dom";
 import { IconReload } from "@tabler/icons-react";
 
+import { Slider } from "@/components/ui/slider";
+import EditorSettingsModal from "../modals/EditorSettingsModal";
+
 const langExtensions = {
   Javascript: javascript(),
   Python: python(),
@@ -43,6 +54,8 @@ const CodeEditor = ({
   acceptedCodes,
   setCode,
   isLoggedIn,
+  openSettings,
+  setOpenSettings,
 }) => {
   useEffect(() => {
     if (starterCode) {
@@ -80,20 +93,42 @@ const CodeEditor = ({
 
   const [editorThemeIsActive, setEditorThemeIsActive] = useState(false);
 
-  let editorTheme = null;
+  const [editorTheme, setEditorTheme] = useState(null);
+  useEffect(() => {
+    if (localStorage.getItem("editorTheme")) {
+      setEditorTheme(localStorage.getItem("editorTheme"));
+      setEditorThemeIsActive(true);
+    }
+  }, []);
 
   const theme = editorThemeIsActive
     ? editorTheme
     : isDark
-      ? tokyoNight
-      : githubLight;
+      ? "tokyoNight"
+      : "githubLight";
 
   const [open, setOpen] = useState(false);
+
+  // const [openSettings, setOpenSettings] = useState(false);
+  const [fontSize, setFontSize] = useState(
+    Number(localStorage.getItem("fontSize")) || 14,
+  );
+
+  const themeMap = {
+    tokyoNight,
+    githubLight,
+    dracula,
+    okaidia,
+    nord,
+    solarizedLight,
+    materialLight,
+    duotoneLight,
+  };
 
   return (
     <div className="h-full flex flex-col w-full">
       {/* navbar */}
-      <div className="flex justify-between p-2">
+      <div className="flex items-center justify-between px-2 py-1">
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <Button
@@ -178,6 +213,10 @@ const CodeEditor = ({
 
           {/* Settings */}
           <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenSettings((prev) => !prev);
+            }}
             className="group relative flex h-8 w-8 items-center justify-center rounded-lg 
     border border-neutral-200 dark:border-neutral-800 
     bg-white/70 dark:bg-neutral-900/70 backdrop-blur
@@ -195,24 +234,42 @@ const CodeEditor = ({
       </div>
 
       {/* editor */}
-      <CodeMirror
-        key={isDark}
-        value={code}
-        onChange={(val) => {
-          setCode(val);
-        }}
-        height="100%"
-        theme={theme}
-        extensions={[langExtensions[language]]}
-        basicSetup={{
-          lineNumbers: true,
-          highlightActiveLine: true,
-          foldGutter: true,
-          autocompletion: true,
-          tabSize: 2,
-        }}
-        className="flex-1 overflow-y-auto "
-      />
+      <div className="relative overflow-auto">
+        <CodeMirror
+          key={isDark}
+          value={code}
+          onChange={(val) => {
+            setCode(val);
+          }}
+          height="100%"
+          // theme={themeMap[editorTheme]}
+          theme={themeMap[theme]}
+          extensions={[langExtensions[language]]}
+          style={{
+            fontSize: `${fontSize}px`,
+          }}
+          basicSetup={{
+            lineNumbers: true,
+            highlightActiveLine: true,
+            foldGutter: true,
+            autocompletion: true,
+            tabSize: 2,
+          }}
+          className="flex-1 overflow-y-auto "
+        />
+        {openSettings && (
+          <EditorSettingsModal
+            open={openSettings}
+            setOpen={setOpenSettings}
+            fontSize={fontSize}
+            setFontSize={setFontSize}
+            theme={theme}
+            editorTheme={editorTheme}
+            setEditorTheme={setEditorTheme}
+            setEditorThemeIsActive={setEditorThemeIsActive}
+          />
+        )}
+      </div>
 
       <div className="bottom flex justify-end gap-2 bg-transparent px-1 py-1 w-full h-10 ">
         {isLoggedIn ? (
