@@ -17,8 +17,6 @@ const ProblemDetail = () => {
 
   const [problem, setProblem] = useState(null);
 
-  const [language, setLanguage] = useState("Java");
-
   const [code, setCode] = useState("");
   const [acceptedCodes, setAcceptedCodes] = useState({});
 
@@ -33,12 +31,16 @@ const ProblemDetail = () => {
           setAcceptedCodes(data.latestByLanguage);
         }
       } catch (err) {
-        console.log("error aagya", err.message);
+        console.log(err.message);
       }
     };
 
     getProblemDetail();
   }, [slug]);
+
+  const [language, setLanguage] = useState(
+    localStorage.getItem("lastUsedLanguage") || "Java",
+  );
 
   const difficultyStyle = {
     All: "bg-neutral-200 text-neutral-600 dark:bg-neutral-400/10 dark:text-neutral-400",
@@ -311,9 +313,10 @@ const ProblemDetail = () => {
         <Separator className="w-0.5  hover:bg-cyan-400 outline-none transition-colors cursor-col-resize" />
         <Panel defaultSize={60} minSize={30} className="">
           <Group orientation="vertical" className="h-full flex">
-            <Panel defaultSize={90} minSize={30} className="flex h-full">
+            <Panel defaultSize={90} minSize={50} className="flex h-full">
               <div className="flex-1 m-1 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 w-full">
                 <CodeEditor
+                  problemNumber={problem?.problemNumber}
                   slug={problem?.slug}
                   starterCode={problem?.starterCode}
                   onRun={onRun}
@@ -332,7 +335,7 @@ const ProblemDetail = () => {
 
             <Separator className="h-0.5  hover:bg-cyan-400 outline-none transition-colors cursor-col-resize" />
 
-            <Panel defaultSize={60} minSize={30} className="flex h-full">
+            <Panel defaultSize={60} minSize={49} className="flex h-full">
               <div className="flex-1 m-1 rounded-xl overflow-auto bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
                 {panelView === "TestCase" ? (
                   <TestCasePanel results={results} loading={loading} />

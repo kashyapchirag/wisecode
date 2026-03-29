@@ -18,7 +18,6 @@ const EditorSettingsModal = ({
   theme,
   editorTheme,
   setEditorTheme,
-  setEditorThemeIsActive,
 }) => {
   //   const [theme, setTheme] = useState("tokyoNight");
   return (
@@ -54,20 +53,35 @@ const EditorSettingsModal = ({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-full flex justify-between items-center px-2 py-1 rounded-md border border-neutral-200 dark:border-neutral-800 bg-white/60 dark:bg-neutral-800/60 text-sm">
-                {theme}
+                {editorTheme ? theme : "System Default"}
                 <ChevronDown size={14} />
               </button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="w-48 p-1">
               <DropdownMenuRadioGroup
-                value={editorTheme || theme}
+                value={editorTheme ?? "system"}
                 onValueChange={(value) => {
-                  setEditorThemeIsActive(true);
-                  setEditorTheme(value);
-                  localStorage.setItem("editorTheme", value);
+                  if (value === "system") {
+                    setEditorTheme(null);
+                    localStorage.removeItem("editorTheme");
+                  } else {
+                    setEditorTheme(value);
+                    localStorage.setItem("editorTheme", value);
+                  }
                 }}
               >
+                {/* SYSTEM DEFAULT */}
+                <DropdownMenuRadioItem
+                  value="system"
+                  className="px-2 py-1.5 rounded-md font-medium text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                >
+                  System Default
+                </DropdownMenuRadioItem>
+
+                {/* SEPARATOR */}
+                <div className="h-px bg-neutral-200 dark:bg-neutral-800 my-1" />
+
                 {/* DARK THEMES */}
                 <div className="px-2 py-1 text-[10px] uppercase tracking-wide text-neutral-400">
                   Dark

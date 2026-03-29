@@ -35,7 +35,6 @@ import {
 import { NavLink } from "react-router-dom";
 import { IconReload } from "@tabler/icons-react";
 
-import { Slider } from "@/components/ui/slider";
 import EditorSettingsModal from "../modals/EditorSettingsModal";
 
 const langExtensions = {
@@ -45,6 +44,7 @@ const langExtensions = {
   Java: java(),
 };
 const CodeEditor = ({
+  problemNumber,
   starterCode,
   onRun,
   onSubmit,
@@ -59,13 +59,22 @@ const CodeEditor = ({
 }) => {
   useEffect(() => {
     if (starterCode) {
-      setCode(acceptedCodes.Java || starterCode.java); // load when data arrives
+      setCode(
+        localStorage.getItem(`code-${problemNumber}-${language}`) ||
+          acceptedCodes[language] ||
+          starterCode?.[language.toLowerCase()],
+      ); // load when data arrives
     }
   }, [starterCode]);
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
-    setCode(acceptedCodes[lang] || starterCode?.[lang.toLowerCase()]);
+    localStorage.setItem("lastUsedLanguage", lang);
+    setCode(
+      localStorage.getItem(`code-${problemNumber}-${lang}`) ||
+        acceptedCodes[lang] ||
+        starterCode?.[lang.toLowerCase()],
+    );
   };
 
   const languageStyle = {
@@ -91,17 +100,14 @@ const CodeEditor = ({
     return () => observer.disconnect();
   }, []);
 
-  const [editorThemeIsActive, setEditorThemeIsActive] = useState(false);
-
   const [editorTheme, setEditorTheme] = useState(null);
   useEffect(() => {
     if (localStorage.getItem("editorTheme")) {
       setEditorTheme(localStorage.getItem("editorTheme"));
-      setEditorThemeIsActive(true);
     }
   }, []);
 
-  const theme = editorThemeIsActive
+  const theme = editorTheme
     ? editorTheme
     : isDark
       ? "tokyoNight"
@@ -111,7 +117,7 @@ const CodeEditor = ({
 
   // const [openSettings, setOpenSettings] = useState(false);
   const [fontSize, setFontSize] = useState(
-    Number(localStorage.getItem("fontSize")) || 14,
+    Number(localStorage.getItem("fontSize")) || 12,
   );
 
   const themeMap = {
@@ -196,6 +202,10 @@ const CodeEditor = ({
           <button
             onClick={() => {
               setCode(starterCode?.[language.toLowerCase()]);
+              localStorage.setItem(
+                `code-${problemNumber}-${language}`,
+                starterCode?.[language.toLowerCase()],
+              );
             }}
             className="group relative flex h-8 w-8 items-center justify-center rounded-lg 
     border border-neutral-200 dark:border-neutral-800 
@@ -234,15 +244,15 @@ const CodeEditor = ({
       </div>
 
       {/* editor */}
-      <div className="relative overflow-auto">
+      <div className="relative flex-1 overflow-auto">
         <CodeMirror
           key={isDark}
           value={code}
           onChange={(val) => {
             setCode(val);
+            localStorage.setItem(`code-${problemNumber}-${language}`, val);
           }}
           height="100%"
-          // theme={themeMap[editorTheme]}
           theme={themeMap[theme]}
           extensions={[langExtensions[language]]}
           style={{
@@ -255,7 +265,7 @@ const CodeEditor = ({
             autocompletion: true,
             tabSize: 2,
           }}
-          className="flex-1 overflow-y-auto "
+          className="flex-1 h-full overflow-y-auto"
         />
         {openSettings && (
           <EditorSettingsModal
@@ -266,7 +276,6 @@ const CodeEditor = ({
             theme={theme}
             editorTheme={editorTheme}
             setEditorTheme={setEditorTheme}
-            setEditorThemeIsActive={setEditorThemeIsActive}
           />
         )}
       </div>
