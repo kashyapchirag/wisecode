@@ -266,6 +266,7 @@ const AuthPage = () => {
             value={form.confirmPassword}
             onChange={handleChange}
             placeholder={"Re-enter password"}
+            handleSubmit={handleSubmit}
           />
           {errors.confirmPassword && (
             <p className="text-red-400 text-xs mt-1 px-1">
