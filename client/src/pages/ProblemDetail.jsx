@@ -94,6 +94,8 @@ const ProblemDetail = () => {
       setResults(res.data.results);
       setLoading(false);
     } catch (err) {
+      console.log(err.response?.data?.error);
+
       toast.error(err.response?.data?.message || "Something went wrong");
     }
   };

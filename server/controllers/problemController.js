@@ -125,7 +125,7 @@ export const submitCode = async (req, res) => {
             })
         )
         const compilationErrorCheck = results.some(re =>
-            re.status.includes("Compilation Error")
+            re.status.includes("compilation error")
         );
 
         const runtimeErrorCheck = results.some(re =>
@@ -133,7 +133,7 @@ export const submitCode = async (req, res) => {
         );
 
         const TLECheck = results.some(re =>
-            re.status.includes("Time Limit Exceeded")
+            re.status.includes("time limit exceeded")
         );
 
         const wrongAnswerCheck = results.some(re =>
