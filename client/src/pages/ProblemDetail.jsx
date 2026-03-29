@@ -4,7 +4,6 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { cn } from "@/utils/cn";
 import CodeEditor from "@/components/editor/CodeEditor";
-import axios from "axios";
 import TestCasePanel from "@/components/panels/TestCasePanel";
 import SubmitPanel from "@/components/panels/SubmitPanel";
 import { Skeleton } from "@/components/ui/skeleton";

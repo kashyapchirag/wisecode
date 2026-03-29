@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { LogIn, Moon, Sun, User } from "lucide-react";
 import { LogOut } from "lucide-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import axios from "axios";
+import api from "@/api/axios";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +26,7 @@ const ProblemSetNavbar = () => {
   const { isLoggedIn, setIsLoggedIn } = useOutletContext();
   const handleLogOut = async () => {
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "/api/signout",
         {},
         { withCredentials: true },

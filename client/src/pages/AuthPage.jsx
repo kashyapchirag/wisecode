@@ -2,7 +2,6 @@ import SoftAurora from "@/components/ui/SoftAurora";
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/utils/cn";
-import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
