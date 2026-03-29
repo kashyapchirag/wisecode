@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { ArrowLeft, ChevronLeft, CornerUpLeft, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import api from "@/api/axios";
 
 const ProblemDetail = () => {
   const { slug } = useParams();
@@ -61,7 +62,7 @@ const ProblemDetail = () => {
     setLoading(true);
     setPanelView("TestCase");
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "/api/run",
         {
           language,
@@ -81,7 +82,7 @@ const ProblemDetail = () => {
     setLoading(true);
     setPanelView("Submit");
     try {
-      const res = await axios.post(
+      const res = await api.post(
         "/api/submit",
         {
           language,

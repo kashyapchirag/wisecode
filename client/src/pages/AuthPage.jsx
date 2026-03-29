@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import api from "@/api/axios";
 
 const AuthPage = () => {
   useEffect(() => {
@@ -90,7 +91,7 @@ const AuthPage = () => {
 
       setLoading(true);
       try {
-        const res = await axios.post(
+        const res = await api.post(
           "/api/signin",
           { email: form.email, password: form.password },
           { withCredentials: true },
@@ -212,7 +213,7 @@ const AuthPage = () => {
       setLoading(true);
 
       try {
-        const res = await axios.post("/api/signup", {
+        const res = await api.post("/api/signup", {
           email: form.email,
           password: form.password,
         });
