@@ -297,7 +297,7 @@ const CodeEditor = ({
             autocompletion: true,
             tabSize: 2,
           }}
-          className="flex-1 h-full overflow-y-auto"
+          className="flex-1 h-full"
         />
         {openSettings && (
           <EditorSettingsModal
