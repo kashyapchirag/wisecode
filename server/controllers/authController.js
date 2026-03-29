@@ -36,7 +36,7 @@ export const signIn = async (req, res) => {
         )
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "None",
         });
         return res.status(200).json({ message: "Logged In Successfully", token })
@@ -55,7 +55,7 @@ export const signOut = async (req, res) => {
     try {
         res.clearCookie('token', {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "None",
         });
         res.status(200).json({ message: "Logged Out Successfully" })
