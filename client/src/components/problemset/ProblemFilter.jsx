@@ -33,8 +33,8 @@ const ProblemFilter = ({ difficulty, setDifficulty, completion }) => {
       <div className="text-[2.6rem] font-mono font-bold ">Problems</div>
       <div className="flex w-full gap-5 justify-between items-center">
         <span className="w-140 dark:text-neutral-500 text-sm ">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio,
-          quidem?
+          Sharpen your problem-solving skills. Practice curated coding problems
+          across multiple difficulty levels.
         </span>
         <div className="completionStatus text-[12px] font-mono p-3 rounded-lg bg-green-50 border border-green-200 dark:border-neutral-800 dark:bg-neutral-900 flex items-center justify-between gap-5">
           <span className="dark:text-neutral-400 ">Solved</span>
