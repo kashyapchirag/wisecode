@@ -19,7 +19,7 @@ dbConnection();
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://wise-code-delta.vercel.app"
+        "https://wisecode-xyz.vercel.app"
     ],
     credentials: true
 }));
