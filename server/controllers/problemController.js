@@ -16,7 +16,7 @@ export const getCompletion = async (req, res) => {
     try {
 
         // problems solved by user
-        const acceptedProblems = await Submission.find({
+        const acceptedProblems = await Subission.find({
             userId: req.user.userId,
             status: "Accepted"
         }).distinct("problemId")

@@ -69,6 +69,7 @@ using namespace std;
 
 vector<int> twoSum(vector<int>& nums, int target) {
     // your code here
+    return {};
 }
 
 /* DO NOT EDIT BELOW */
@@ -174,6 +175,7 @@ using namespace std;
 
 bool isValid(string s) {
     // your code here
+    return false;
 }
 
 /* DO NOT EDIT BELOW */
@@ -286,6 +288,7 @@ struct ListNode { int val; ListNode* next; ListNode(int v) : val(v), next(nullpt
 
 ListNode* reverseList(ListNode* head) {
     // your code here
+    return nullptr;
 }
 
 /* DO NOT EDIT BELOW */
@@ -399,6 +402,7 @@ using namespace std;
 
 int maxSubArray(vector<int>& nums) {
     // your code here
+    return 0;
 }
 
 /* DO NOT EDIT BELOW */
@@ -491,6 +495,7 @@ using namespace std;
 
 int climbStairs(int n) {
     // your code here
+    return 0;
 }
 
 /* DO NOT EDIT BELOW */
@@ -575,6 +580,7 @@ using namespace std;
 
 int maxProfit(vector<int>& prices) {
     // your code here
+    return 0;
 }
 
 /* DO NOT EDIT BELOW */
@@ -670,6 +676,7 @@ using namespace std;
 
 int lengthOfLongestSubstring(string s) {
     // your code here
+    return 0;
 }
 
 /* DO NOT EDIT BELOW */
@@ -758,6 +765,7 @@ using namespace std;
 
 vector<vector<int>> merge(vector<vector<int>>& intervals) {
     // your code here
+    return {};
 }
 
 /* DO NOT EDIT BELOW */
@@ -917,6 +925,7 @@ struct TreeNode { int val; TreeNode *left, *right; TreeNode(int v) : val(v), lef
 
 vector<vector<int>> levelOrder(TreeNode* root) {
     // your code here
+    return {};
 }
 
 /* DO NOT EDIT BELOW */
@@ -1046,6 +1055,7 @@ using namespace std;
 
 int numIslands(vector<vector<char>>& grid) {
     // your code here
+    return 0;
 }
 
 /* DO NOT EDIT BELOW */
@@ -1164,6 +1174,7 @@ using namespace std;
 
 bool exist(vector<vector<char>>& board, string word) {
     // your code here
+    return false;
 }
 
 /* DO NOT EDIT BELOW */
@@ -1285,6 +1296,7 @@ using namespace std;
 
 double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
     // your code here
+    return 0.0;
 }
 
 /* DO NOT EDIT BELOW */
@@ -1391,6 +1403,7 @@ using namespace std;
 
 bool containsDuplicate(vector<int>& nums) {
     // your code here
+    return false;
 }
 
 /* DO NOT EDIT BELOW */
@@ -1490,6 +1503,7 @@ using namespace std;
 
 int search(vector<int>& nums, int target) {
     // your code here
+    return -1;
 }
 
 /* DO NOT EDIT BELOW */
@@ -1610,6 +1624,7 @@ struct ListNode { int val; ListNode* next; ListNode(int v) : val(v), next(nullpt
 
 bool hasCycle(ListNode* head) {
     // your code here
+    return false;
 }
 
 /* DO NOT EDIT BELOW */
@@ -1714,6 +1729,7 @@ using namespace std;
 
 int hpAfterBattle(int hp, vector<int>& damage) {
     // your code here
+    return 0;
 }
 
 /* DO NOT EDIT BELOW */

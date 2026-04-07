@@ -68,7 +68,7 @@ const ProblemDetail = () => {
           code,
           slug,
         },
-        { withCredentials: true },
+        // { withCredentials: true },
       );
       setLoading(false);
       console.log(res.data.results);
