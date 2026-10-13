@@ -5,7 +5,9 @@ import Submission from "../models/Submission.js";
 export const getProblemSet = async (req, res) => {
     try {
         // problem list
-        const problems = await Problem.find().select("problemNumber title slug difficulty");
+        const problems = await Problem.find()
+            .select("problemNumber title slug difficulty")
+            .sort({ problemNumber: 1 });
         res.status(200).json(problems);
 
     } catch (err) {
@@ -16,7 +18,7 @@ export const getCompletion = async (req, res) => {
     try {
 
         // problems solved by user
-        const acceptedProblems = await Subission.find({
+        const acceptedProblems = await Submission.find({
             userId: req.user.userId,
             status: "Accepted"
         }).distinct("problemId")

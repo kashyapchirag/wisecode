@@ -3,9 +3,11 @@ import React, { useEffect } from "react";
 import ProblemRow from "./ProblemRow";
 
 const ProblemTable = ({ solvedProblems, problems, difficulty }) => {
-  const filteredProblems = problems.filter((problem) =>
-    difficulty == "All" ? true : difficulty === problem.difficulty,
-  );
+  const filteredProblems = problems
+    .filter((problem) =>
+      difficulty == "All" ? true : difficulty === problem.difficulty,
+    )
+    .sort((a, b) => a.problemNumber - b.problemNumber);
   return (
     <div className="w-full divide-y mt-6 divide-neutral-200 dark:divide-neutral-800">
       {filteredProblems.map((ele, idx) => (
